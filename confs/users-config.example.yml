@@ -1,0 +1,4 @@
+- name: Steven
+  phone_number: '+15555555555'
+  store_ids:
+  - 369
