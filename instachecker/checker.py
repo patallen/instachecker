@@ -3,7 +3,7 @@ from typing import List
 
 import requests
 
-from models import Slot, Store
+from .models import Slot, Store
 
 log = logging.getLogger("delcheck.checker")
 

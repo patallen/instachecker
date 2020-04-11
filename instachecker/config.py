@@ -2,7 +2,7 @@ import os
 
 import yaml
 
-from models import Store, User
+from .models import Store, User
 
 
 def stores_from_config():

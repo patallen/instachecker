@@ -3,11 +3,11 @@ import os
 
 import dotenv
 
-from checker import SlotChecker
-from notifier import UserNotifier
-from config import users_from_config
-from config import stores_from_config
-from config import twilio_config
+from .checker import SlotChecker
+from .notifier import UserNotifier
+from .config import users_from_config
+from .config import stores_from_config
+from .config import twilio_config
 
 dotenv.load_dotenv()
 
