@@ -9,7 +9,7 @@ functions:
   check_stores:
     handler: instachecker.handlers.check_stores
     events:
-    - schedule: cron(0,30 * * * ? *)
+    - schedule: cron(0,15 * * * ? *)
 
 custom:
   pythonRequirements:

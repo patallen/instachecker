@@ -4,7 +4,8 @@ import random
 from twilio.rest import Client
 
 
-log = logging.getLogger("delcheck.notifier")
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("instachecker.notifier")
 
 
 def random_name():

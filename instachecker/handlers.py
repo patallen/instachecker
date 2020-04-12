@@ -12,7 +12,7 @@ from .config import twilio_config
 dotenv.load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
-log = logging.getLogger("delcheck")
+log = logging.getLogger("instachecker")
 
 
 def check_stores(_event=None, _ctx=None):

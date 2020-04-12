@@ -5,7 +5,8 @@ import requests
 
 from .models import Slot, Store
 
-log = logging.getLogger("delcheck.checker")
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("instachecker.checker")
 
 
 class SlotChecker:
@@ -29,6 +30,7 @@ class SlotChecker:
         request = self.build_request(store.id)
         prepared = request.prepare()
         res = self.session.send(prepared)
+        res.raise_for_status()
         data = res.json()
         options = data["tracking_params"]["delivery_options"]
         return [Slot(starts_at=o["starts_at"], ends_at=o["ends_at"]) for o in options]
