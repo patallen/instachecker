@@ -31,6 +31,10 @@ class UserStore:
 
         return User(**user_dict)
 
+    def all(self):
+        users = self.table.scan()['Items']
+        return [User(**user) for user in users]
+
     def create(self, user_dict):
         self.table.put_item(Item=user_dict)
         return User(**user_dict)

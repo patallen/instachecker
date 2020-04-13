@@ -32,13 +32,13 @@ def check_stores(_event=None, _ctx=None):
     checker = SlotChecker(os.environ["REMEMBER_USER_TOKEN"])
     stores = stores_from_config()
 
-    users = users_from_config()
     twilio_conf = twilio_config()
     notifier = UserNotifier(twilio_conf)
 
     status_store = StatusStore(f"StatusesTable")
+    user_store = UserStore("UsersTable")
 
-    for user in users:
+    for user in user_store.all():
         changes = []
         for store_id in user.store_ids:
             store = _get_store(stores, store_id)
