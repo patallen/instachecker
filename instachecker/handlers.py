@@ -2,7 +2,6 @@ import base64
 import logging
 import os
 import urllib
-from dataclasses import dataclass
 
 import dotenv
 
