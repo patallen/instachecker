@@ -3,7 +3,7 @@ from typing import List
 
 import requests
 
-from .models import Slot, Store
+from .models import Slot
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("instachecker.checker")
@@ -18,19 +18,18 @@ class SlotChecker:
         return {"cookie": f"remember_user_token={self.remember_user_token};"}
 
     @staticmethod
-    def build_url(store_id):
-        return f"https://www.instacart.com/v3/retailers/{store_id}/delivery_options"
+    def build_url(store_id, address_id):
+        return f"https://www.instacart.com/v3/retailers/{store_id}/delivery_options?address_id={address_id}"
 
-    def build_request(self, store_id):
+    def build_request(self, store_id, address_id):
         headers = self.build_headers()
-        url = self.build_url(store_id)
-        return requests.Request("GET", url, headers=headers)
+        url = self.build_url(store_id, address_id)
+        return requests.Request("GET", url, headers=headers).prepare()
 
-    def check_store(self, store: Store) -> List[Slot]:
-        request = self.build_request(store.id)
-        prepared = request.prepare()
-        res = self.session.send(prepared)
+    def get_status(self, user, store) -> List[Slot]:
+        request = self.build_request(store.id, user.address_id)
+        res = self.session.send(request)
         res.raise_for_status()
         data = res.json()
-        options = data["tracking_params"]["delivery_options"]
-        return [Slot(starts_at=o["starts_at"], ends_at=o["ends_at"]) for o in options]
+        slots = data["tracking_params"]["delivery_options"]
+        return "AVAILABLE" if slots else "UNAVAILABLE"

@@ -10,49 +10,43 @@ log = logging.getLogger("instachecker.notifier")
 
 def random_name():
     names = [
-        "The Insta-cartographer",
-        "Carty B. Checkin' Out",
+        "Don Jr.",
+        "Snoop Dogg",
         "Instagrabber ;)",
-        "Bim Bam Margera",
+        "Crazy Pete",
+        "Dr. Wally Winkers",
+        "J. C. Penny",
     ]
     return names[random.randint(0, len(names) - 1)]
 
 
 class UserNotifier:
-    def __init__(self, users, twilio_config):
-        self.users = users
+    def __init__(self, twilio_config):
         self.twilio_config = twilio_config
         self.twilio = Client(twilio_config["account_sid"], twilio_config["auth_token"])
 
     @staticmethod
-    def build_message_body(user, store, slots):
-        is_or_are = "is" if len(slots) == 1 else "are"
-        with_s = "s" if len(slots) > 1 else ""
-        slot_count = len(slots)
-
+    def build_message_body(user, store):
         body = f"""Hi, {user.name}!
 
-There {is_or_are} {slot_count} delivery slot{with_s} available at {store.name} in {store.location}.
+There are Instacart delivery slots open at {store.name} near you.
 
-www.instacart.com
+Feel free to tell me to "fuck off" if you wish to not be bothered.
 
 Yours truly,
 {random_name()}
 """
         return body
 
-    def notify_users(self, store, slots):
-        users = [u for u in self.users if store.id in u.store_ids]
+    def notify(self, user, store):
         log.info(
-            "Notifying %d users of available slots at %s in %s",
-            len(users),
+            "Notifying user %s (%d) of availabilities at %s near address %d",
+            user.name,
+            user.id,
             store.name,
-            store.location,
+            user.address_id,
         )
 
         from_number = self.twilio_config["from_number"]
-        for user in users:
-            body = self.build_message_body(user, store, slots)
-            self.twilio.messages.create(
-                to=user.phone_number, from_=from_number, body=body
-            )
+        body = self.build_message_body(user, store)
+        self.twilio.messages.create(to=user.phone_number, from_=from_number, body=body)
