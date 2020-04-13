@@ -1,4 +1,12 @@
-- name: Steven
+- name: Mike
+  address_id: 55555555
   phone_number: '+15555555555'
+  messaging_enabled: false
+  store_ids:
+  - 369
+- name: Ike
+  address_id: 55555556
+  phone_number: '+15555555556'
+  messaging_enabled: true
   store_ids:
   - 369
